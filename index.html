@@ -9,8 +9,8 @@
 <body>
     <!-- 语言切换按钮 -->
     <div class="language-toggle">
-        <button class="lang-btn active" data-lang="zh">🇨🇳</button>
-        <button class="lang-btn" data-lang="en">🇺🇸</button>
+        <button class="lang-btn active" data-lang="zh" title="中文">🇨🇳</button>
+        <button class="lang-btn" data-lang="en" title="English">🇬🇧</button>
     </div>
 
     <!-- 天气和时间显示区 -->
@@ -18,44 +18,14 @@
         <div class="weather-time-section">
             <h1 class="app-title" data-i18n="app-title">全球时间与天气</h1>
 
-            <!-- 上海城市卡片 - 居中大卡片 -->
+            <!-- 当前城市卡片 - 居中大卡片 -->
             <div class="local-city-container">
-                <div class="city-card city-card-large" id="shanghai-card">
+                <div class="city-card city-card-large" id="local-card">
                     <div class="city-header">
-                        <h2 class="city-name">Shanghai · 上海</h2>
-                    </div>
-                    <div class="timezone-display" id="shanghai-timezone">UTC+8</div>
-                    <div class="date-display" id="shanghai-date">--</div>
-                    <div class="time-display" id="shanghai-time">--:--:--</div>
-                    <div class="weather-info">
-                        <div class="weather-icon" id="shanghai-weather-icon">🌤️</div>
-                        <div class="weather-details">
-                            <div class="temperature" id="shanghai-temp">--°C</div>
-                            <div class="weather-desc" id="shanghai-desc" data-i18n="loading">加载中...</div>
-                        </div>
-                    </div>
-                    <div class="weather-stats">
-                        <div class="stat">
-                            <span class="stat-label" data-i18n="humidity">湿度</span>
-                            <span class="stat-value" id="shanghai-humidity">--%</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-label" data-i18n="air-quality">空气质量</span>
-                            <span class="stat-value" id="shanghai-aqi">--</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 其他城市卡片 - 小卡片网格 -->
-            <div class="other-cities-container">
-                <!-- 本地城市卡片 -->
-                <div class="city-card city-card-small" id="local-card">
-                    <div class="city-header">
-                        <h3 class="city-name">
+                        <h2 class="city-name">
                             <span id="local-city-name" data-i18n="select-city">选择城市</span>
-                            <button class="city-select-btn-small" id="select-city-btn">📍</button>
-                        </h3>
+                            <button class="city-select-btn" id="select-city-btn">📍</button>
+                        </h2>
                     </div>
                     <div class="timezone-display" id="local-timezone">UTC+8</div>
                     <div class="date-display" id="local-date">--</div>
@@ -78,8 +48,38 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- 巴黎卡片 -->
+            <!-- 其他城市卡片 - 按时区从早到晚排列 -->
+            <div class="other-cities-container">
+                <!-- 纽约卡片 (UTC-5) -->
+                <div class="city-card city-card-small" id="newyork-card">
+                    <div class="city-header">
+                        <h3 class="city-name">New York · 纽约</h3>
+                    </div>
+                    <div class="timezone-display" id="newyork-timezone">UTC-5</div>
+                    <div class="date-display" id="newyork-date">--</div>
+                    <div class="time-display" id="newyork-time">--:--:--</div>
+                    <div class="weather-info">
+                        <div class="weather-icon" id="newyork-weather-icon">🌤️</div>
+                        <div class="weather-details">
+                            <div class="temperature" id="newyork-temp">--°C</div>
+                            <div class="weather-desc" id="newyork-desc" data-i18n="loading">加载中...</div>
+                        </div>
+                    </div>
+                    <div class="weather-stats">
+                        <div class="stat">
+                            <span class="stat-label" data-i18n="humidity">湿度</span>
+                            <span class="stat-value" id="newyork-humidity">--%</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label" data-i18n="air-quality">空气质量</span>
+                            <span class="stat-value" id="newyork-aqi">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 巴黎卡片 (UTC+1) -->
                 <div class="city-card city-card-small" id="paris-card">
                     <div class="city-header">
                         <h3 class="city-name">Paris · 巴黎</h3>
@@ -106,29 +106,29 @@
                     </div>
                 </div>
 
-                <!-- 纽约卡片 -->
-                <div class="city-card city-card-small" id="newyork-card">
+                <!-- 上海卡片 (UTC+8) -->
+                <div class="city-card city-card-small" id="shanghai-card">
                     <div class="city-header">
-                        <h3 class="city-name">New York · 纽约</h3>
+                        <h3 class="city-name">Shanghai · 上海</h3>
                     </div>
-                    <div class="timezone-display" id="newyork-timezone">UTC-5</div>
-                    <div class="date-display" id="newyork-date">--</div>
-                    <div class="time-display" id="newyork-time">--:--:--</div>
+                    <div class="timezone-display" id="shanghai-timezone">UTC+8</div>
+                    <div class="date-display" id="shanghai-date">--</div>
+                    <div class="time-display" id="shanghai-time">--:--:--</div>
                     <div class="weather-info">
-                        <div class="weather-icon" id="newyork-weather-icon">🌤️</div>
+                        <div class="weather-icon" id="shanghai-weather-icon">🌤️</div>
                         <div class="weather-details">
-                            <div class="temperature" id="newyork-temp">--°C</div>
-                            <div class="weather-desc" id="newyork-desc" data-i18n="loading">加载中...</div>
+                            <div class="temperature" id="shanghai-temp">--°C</div>
+                            <div class="weather-desc" id="shanghai-desc" data-i18n="loading">加载中...</div>
                         </div>
                     </div>
                     <div class="weather-stats">
                         <div class="stat">
                             <span class="stat-label" data-i18n="humidity">湿度</span>
-                            <span class="stat-value" id="newyork-humidity">--%</span>
+                            <span class="stat-value" id="shanghai-humidity">--%</span>
                         </div>
                         <div class="stat">
                             <span class="stat-label" data-i18n="air-quality">空气质量</span>
-                            <span class="stat-value" id="newyork-aqi">--</span>
+                            <span class="stat-value" id="shanghai-aqi">--</span>
                         </div>
                     </div>
                 </div>

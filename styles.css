@@ -30,13 +30,13 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
     background: var(--primary-bg);
     color: var(--text-primary-day);
-    line-height: 1.6;
+    line-height: 1.5;
     min-height: 100vh;
-    padding: 20px;
+    padding: 15px 20px;
 }
 
 .dashboard-container {
-    max-width: 1400px;
+    max-width: 1880px;
     margin: 0 auto;
 }
 
@@ -79,28 +79,28 @@ body {
 /* 应用标题 */
 .app-title {
     text-align: center;
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-weight: 600;
     color: var(--text-primary-day);
-    margin-bottom: 40px;
+    margin-bottom: 25px;
 }
 
 /* 天气时间区域 */
 .weather-time-section {
-    margin-bottom: 40px;
+    margin-bottom: 25px;
 }
 
 /* 本地城市容器 - 居中大卡片 */
 .local-city-container {
     display: flex;
     justify-content: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .city-card-large {
     width: 100%;
-    max-width: 600px;
-    padding: 40px;
+    max-width: 550px;
+    padding: 30px 35px;
 }
 
 .city-card-large .city-name {
@@ -346,7 +346,7 @@ body {
 .timer-section {
     background: var(--card-bg-day);
     border-radius: 16px;
-    padding: 32px;
+    padding: 24px 28px;
     box-shadow: var(--shadow);
     border: 1px solid var(--border-color-day);
 }
@@ -425,10 +425,10 @@ body {
 }
 
 .timer-display {
-    font-size: 4rem;
+    font-size: 3.5rem;
     font-weight: 300;
     text-align: center;
-    margin: 40px 0;
+    margin: 30px 0;
     color: var(--text-primary-day);
     font-variant-numeric: tabular-nums;
 }
