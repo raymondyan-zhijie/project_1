@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时间天气仪表盘</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 天气和时间显示区 -->
+    <div class="dashboard-container">
+        <div class="weather-time-section">
+            <h1 class="app-title">全球时间与天气</h1>
+
+            <div class="city-cards">
+                <!-- 本地城市卡片 -->
+                <div class="city-card" id="local-card">
+                    <div class="city-header">
+                        <h2 class="city-name">
+                            <span id="local-city-name">选择城市</span>
+                            <button class="city-select-btn" id="select-city-btn">📍</button>
+                        </h2>
+                    </div>
+                    <div class="time-display" id="local-time">--:--:--</div>
+                    <div class="weather-info">
+                        <div class="weather-icon" id="local-weather-icon">🌤️</div>
+                        <div class="weather-details">
+                            <div class="temperature" id="local-temp">--°C</div>
+                            <div class="weather-desc" id="local-desc">加载中...</div>
+                        </div>
+                    </div>
+                    <div class="weather-stats">
+                        <div class="stat">
+                            <span class="stat-label">湿度</span>
+                            <span class="stat-value" id="local-humidity">--%</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">空气质量</span>
+                            <span class="stat-value" id="local-aqi">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 巴黎卡片 -->
+                <div class="city-card" id="paris-card">
+                    <div class="city-header">
+                        <h2 class="city-name">巴黎</h2>
+                    </div>
+                    <div class="time-display" id="paris-time">--:--:--</div>
+                    <div class="weather-info">
+                        <div class="weather-icon" id="paris-weather-icon">🌤️</div>
+                        <div class="weather-details">
+                            <div class="temperature" id="paris-temp">--°C</div>
+                            <div class="weather-desc" id="paris-desc">加载中...</div>
+                        </div>
+                    </div>
+                    <div class="weather-stats">
+                        <div class="stat">
+                            <span class="stat-label">湿度</span>
+                            <span class="stat-value" id="paris-humidity">--%</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">空气质量</span>
+                            <span class="stat-value" id="paris-aqi">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 纽约卡片 -->
+                <div class="city-card" id="newyork-card">
+                    <div class="city-header">
+                        <h2 class="city-name">纽约</h2>
+                    </div>
+                    <div class="time-display" id="newyork-time">--:--:--</div>
+                    <div class="weather-info">
+                        <div class="weather-icon" id="newyork-weather-icon">🌤️</div>
+                        <div class="weather-details">
+                            <div class="temperature" id="newyork-temp">--°C</div>
+                            <div class="weather-desc" id="newyork-desc">加载中...</div>
+                        </div>
+                    </div>
+                    <div class="weather-stats">
+                        <div class="stat">
+                            <span class="stat-label">湿度</span>
+                            <span class="stat-value" id="newyork-humidity">--%</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">空气质量</span>
+                            <span class="stat-value" id="newyork-aqi">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 计时器区 -->
+        <div class="timer-section">
+            <h2 class="section-title">计时器</h2>
+
+            <div class="timer-controls-top">
+                <div class="timer-mode">
+                    <button class="mode-btn active" id="stopwatch-mode">正计时</button>
+                    <button class="mode-btn" id="countdown-mode">倒计时</button>
+                </div>
+
+                <div class="countdown-input-group" id="countdown-input-group" style="display: none;">
+                    <input type="number" id="hours-input" min="0" max="23" placeholder="时" value="0">
+                    <span>:</span>
+                    <input type="number" id="minutes-input" min="0" max="59" placeholder="分" value="0">
+                    <span>:</span>
+                    <input type="number" id="seconds-input" min="0" max="59" placeholder="秒" value="0">
+                </div>
+            </div>
+
+            <div class="timer-display" id="timer-display">00:00:00</div>
+
+            <div class="timer-buttons">
+                <button class="timer-btn start-btn" id="start-btn">开始</button>
+                <button class="timer-btn pause-btn" id="pause-btn" disabled>暂停</button>
+                <button class="timer-btn reset-btn" id="reset-btn">重置</button>
+                <button class="timer-btn lap-btn" id="lap-btn" disabled>计圈</button>
+            </div>
+
+            <div class="laps-container" id="laps-container">
+                <h3 class="laps-title">计圈记录</h3>
+                <div class="laps-list" id="laps-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 城市选择模态框 -->
+    <div class="modal" id="city-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>选择城市</h3>
+                <button class="close-btn" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="city-search" placeholder="搜索城市...">
+                <div class="city-suggestions" id="city-suggestions">
+                    <div class="city-option" data-city="北京" data-lat="39.9042" data-lon="116.4074">北京</div>
+                    <div class="city-option" data-city="上海" data-lat="31.2304" data-lon="121.4737">上海</div>
+                    <div class="city-option" data-city="广州" data-lat="23.1291" data-lon="113.2644">广州</div>
+                    <div class="city-option" data-city="深圳" data-lat="22.5431" data-lon="114.0579">深圳</div>
+                    <div class="city-option" data-city="成都" data-lat="30.5728" data-lon="104.0668">成都</div>
+                    <div class="city-option" data-city="杭州" data-lat="30.2741" data-lon="120.1551">杭州</div>
+                    <div class="city-option" data-city="重庆" data-lat="29.4316" data-lon="106.9123">重庆</div>
+                    <div class="city-option" data-city="西安" data-lat="34.2658" data-lon="108.9541">西安</div>
+                    <div class="city-option" data-city="武汉" data-lat="30.5928" data-lon="114.3055">武汉</div>
+                    <div class="city-option" data-city="南京" data-lat="32.0603" data-lon="118.7969">南京</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 闪烁遮罩层 -->
+    <div class="flash-overlay" id="flash-overlay"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
