@@ -87,6 +87,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ============ 时间和日期显示功能 ============
 
+// 计算时区偏移
+function getTimezoneOffset(timezone) {
+    const now = new Date();
+    const utcDate = new Date(now.toLocaleString('en-US', { timeZone: 'UTC' }));
+    const tzDate = new Date(now.toLocaleString('en-US', { timeZone: timezone }));
+    const offset = (tzDate.getTime() - utcDate.getTime()) / (1000 * 60 * 60);
+
+    const hours = Math.floor(Math.abs(offset));
+    const minutes = Math.abs((offset % 1) * 60);
+
+    const sign = offset >= 0 ? '+' : '-';
+    if (minutes === 0) {
+        return `UTC${sign}${hours}`;
+    } else {
+        return `UTC${sign}${hours}:${minutes.toString().padStart(2, '0')}`;
+    }
+}
+
 function updateTime() {
     updateCityTime('local', cities.local.timezone);
     updateCityTime('paris', cities.paris.timezone);
@@ -97,6 +115,7 @@ function updateTime() {
 function updateCityTime(cityKey, timezone) {
     const timeElement = document.getElementById(`${cityKey}-time`);
     const dateElement = document.getElementById(`${cityKey}-date`);
+    const timezoneElement = document.getElementById(`${cityKey}-timezone`);
     const now = new Date();
 
     const timeString = now.toLocaleTimeString('zh-CN', {
@@ -117,6 +136,11 @@ function updateCityTime(cityKey, timezone) {
 
     timeElement.textContent = timeString;
     dateElement.textContent = dateString;
+
+    // 更新时区显示
+    if (timezoneElement) {
+        timezoneElement.textContent = getTimezoneOffset(timezone);
+    }
 }
 
 // ============ 天气数据获取 ============
@@ -561,35 +585,45 @@ function updateLapsDisplay() {
 // ============ 倒计时提醒 ============
 
 function triggerAlert() {
-    // 播放系统提示音
-    playAlertSound();
+    // 播放系统提示音（持续5秒）
+    playAlertSound(5);
 
-    // 屏幕闪烁
+    // 屏幕闪烁（持续5秒）
     const flashOverlay = document.getElementById('flash-overlay');
     flashOverlay.classList.add('flashing');
 
     setTimeout(() => {
         flashOverlay.classList.remove('flashing');
-    }, 1500);
+    }, 5000);
 }
 
-function playAlertSound() {
-    // 使用 Web Audio API 生成提示音
+function playAlertSound(duration = 5) {
+    // 使用 Web Audio API 生成提示音，持续指定秒数
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
 
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
+    // 创建多个提示音，形成间断的警报效果
+    const beepInterval = 0.3; // 每次哔声间隔
+    const beepDuration = 0.2; // 每次哔声持续时间
+    const numBeeps = Math.floor(duration / beepInterval);
 
-    oscillator.frequency.value = 800;
-    oscillator.type = 'sine';
+    for (let i = 0; i < numBeeps; i++) {
+        const startTime = audioContext.currentTime + (i * beepInterval);
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
 
-    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
 
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.5);
+        oscillator.frequency.value = 800;
+        oscillator.type = 'sine';
+
+        gainNode.gain.setValueAtTime(0, startTime);
+        gainNode.gain.linearRampToValueAtTime(0.3, startTime + 0.01);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + beepDuration);
+
+        oscillator.start(startTime);
+        oscillator.stop(startTime + beepDuration);
+    }
 }
 
 // ============ 初始化 ============

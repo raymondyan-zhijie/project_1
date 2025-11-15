@@ -238,6 +238,43 @@ body {
     transform: scale(1.05);
 }
 
+.city-select-btn-small {
+    background: var(--accent-blue);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.city-select-btn-small:hover {
+    background: #2980b9;
+    transform: scale(1.05);
+}
+
+.timezone-display {
+    font-size: 0.9rem;
+    color: var(--accent-blue);
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.city-card.night-theme .timezone-display {
+    color: #5dade2;
+}
+
+.city-card-large .timezone-display {
+    font-size: 1.1rem;
+}
+
+.city-card-small .timezone-display {
+    font-size: 0.8rem;
+}
+
 .date-display {
     font-size: 1rem;
     color: var(--text-secondary-day);
@@ -681,7 +718,7 @@ body {
 }
 
 .flash-overlay.flashing {
-    animation: flash 0.5s ease-in-out 3;
+    animation: flash 0.5s ease-in-out 10;
 }
 
 @keyframes flash {
