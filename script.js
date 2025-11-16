@@ -2,7 +2,7 @@
 const API_KEY = '970d3d113e627a7f76997229a4149b8e';
 const API_BASE_URL = 'https://api.openweathermap.org/data/2.5';
 
-// 城市配置
+// 城市配置 - 扩展版
 const cities = {
     local: {
         name: 'Beijing',
@@ -31,8 +31,68 @@ const cities = {
         lat: 31.2304,
         lon: 121.4737,
         timezone: 'Asia/Shanghai'
+    },
+    // 可以继续添加更多城市
+    tokyo: {
+        name: 'Tokyo',
+        nameCN: '东京',
+        lat: 35.6762,
+        lon: 139.6503,
+        timezone: 'Asia/Tokyo'
+    },
+    london: {
+        name: 'London',
+        nameCN: '伦敦',
+        lat: 51.5074,
+        lon: -0.1278,
+        timezone: 'Europe/London'
+    },
+    sydney: {
+        name: 'Sydney',
+        nameCN: '悉尼',
+        lat: -33.8688,
+        lon: 151.2093,
+        timezone: 'Australia/Sydney'
+    },
+    dubai: {
+        name: 'Dubai',
+        nameCN: '迪拜',
+        lat: 25.2048,
+        lon: 55.2708,
+        timezone: 'Asia/Dubai'
+    },
+    singapore: {
+        name: 'Singapore',
+        nameCN: '新加坡',
+        lat: 1.3521,
+        lon: 103.8198,
+        timezone: 'Asia/Singapore'
+    },
+    hongkong: {
+        name: 'Hong Kong',
+        nameCN: '香港',
+        lat: 22.3193,
+        lon: 114.1694,
+        timezone: 'Asia/Hong_Kong'
+    },
+    losangeles: {
+        name: 'Los Angeles',
+        nameCN: '洛杉矶',
+        lat: 34.0522,
+        lon: -118.2437,
+        timezone: 'America/Los_Angeles'
+    },
+    moscow: {
+        name: 'Moscow',
+        nameCN: '莫斯科',
+        lat: 55.7558,
+        lon: 37.6173,
+        timezone: 'Europe/Moscow'
     }
 };
+
+// 日出日落数据缓存键名
+const SUNRISE_SUNSET_CACHE_KEY = 'sunriseSunsetCache';
 
 // 天气图标映射
 const weatherIcons = {
@@ -67,8 +127,72 @@ let timerState = {
     laps: []
 };
 
-// 存储日出日落数据
-const sunriseSunsetCache = {};
+// ============ 日出日落数据本地缓存管理 ============
+
+// 保存日出日落数据到 localStorage
+function saveSunriseSunsetData(cityKey, sunrise, sunset) {
+    try {
+        const cache = JSON.parse(localStorage.getItem(SUNRISE_SUNSET_CACHE_KEY) || '{}');
+        const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+
+        cache[cityKey] = {
+            sunrise: sunrise,
+            sunset: sunset,
+            date: today,
+            timestamp: Date.now()
+        };
+
+        localStorage.setItem(SUNRISE_SUNSET_CACHE_KEY, JSON.stringify(cache));
+        console.log(`已缓存 ${cityKey} 的日出日落数据`);
+    } catch (error) {
+        console.error('保存日出日落数据失败:', error);
+    }
+}
+
+// 从 localStorage 读取日出日落数据
+function loadSunriseSunsetData(cityKey) {
+    try {
+        const cache = JSON.parse(localStorage.getItem(SUNRISE_SUNSET_CACHE_KEY) || '{}');
+        const data = cache[cityKey];
+
+        if (!data) {
+            return null;
+        }
+
+        // 检查数据是否过期（7天）
+        const daysSinceCache = (Date.now() - data.timestamp) / (1000 * 60 * 60 * 24);
+
+        if (daysSinceCache > 7) {
+            console.log(`${cityKey} 的缓存数据已过期 (${Math.floor(daysSinceCache)} 天)，但仍可用于离线模式`);
+        }
+
+        return data;
+    } catch (error) {
+        console.error('读取日出日落数据失败:', error);
+        return null;
+    }
+}
+
+// 清除所有缓存数据
+function clearSunriseSunsetCache() {
+    try {
+        localStorage.removeItem(SUNRISE_SUNSET_CACHE_KEY);
+        console.log('已清除所有日出日落缓存数据');
+    } catch (error) {
+        console.error('清除缓存失败:', error);
+    }
+}
+
+// 获取所有缓存的城市列表
+function getCachedCities() {
+    try {
+        const cache = JSON.parse(localStorage.getItem(SUNRISE_SUNSET_CACHE_KEY) || '{}');
+        return Object.keys(cache);
+    } catch (error) {
+        console.error('获取缓存城市列表失败:', error);
+        return [];
+    }
+}
 
 // ============ 语言切换功能 ============
 
@@ -161,6 +285,9 @@ async function fetchWeather(cityKey, lat, lon) {
 
         updateWeatherDisplay(cityKey, weatherData, aqiData);
 
+        // 保存日出日落数据到本地缓存
+        saveSunriseSunsetData(cityKey, weatherData.sys.sunrise, weatherData.sys.sunset);
+
         // 更新日夜主题
         updateDayNightTheme(cityKey, weatherData.sys.sunrise, weatherData.sys.sunset, weatherData.timezone);
     } catch (error) {
@@ -213,20 +340,61 @@ function updateAllWeather() {
 
 function updateDayNightTheme(cityKey, sunrise, sunset, timezoneOffset) {
     const cityCard = document.getElementById(`${cityKey}-card`);
-    const now = Math.floor(Date.now() / 1000); // 当前时间戳（秒）
 
-    // 考虑时区偏移
-    const localNow = now + timezoneOffset;
-    const localSunrise = sunrise;
-    const localSunset = sunset;
+    // 如果有在线数据，使用API返回的日出日落时间
+    if (sunrise && sunset) {
+        const now = Math.floor(Date.now() / 1000); // 当前UTC时间戳（秒）
+        const isNight = now < sunrise || now > sunset;
 
-    // 判断是否是夜间（日落后或日出前）
-    const isNight = localNow < localSunrise || localNow > localSunset;
-
-    if (isNight) {
-        cityCard.classList.add('night-theme');
+        if (isNight) {
+            cityCard.classList.add('night-theme');
+        } else {
+            cityCard.classList.remove('night-theme');
+        }
     } else {
-        cityCard.classList.remove('night-theme');
+        // 离线模式：使用简化算法
+        updateDayNightThemeOffline(cityKey);
+    }
+}
+
+// 离线模式的白天黑夜判断（优先使用缓存数据）
+function updateDayNightThemeOffline(cityKey) {
+    const cityCard = document.getElementById(`${cityKey}-card`);
+    const cityConfig = cities[cityKey];
+
+    if (!cityConfig) return;
+
+    // 尝试从缓存读取日出日落数据
+    const cachedData = loadSunriseSunsetData(cityKey);
+
+    if (cachedData) {
+        // 使用缓存的日出日落时间判断
+        const now = Math.floor(Date.now() / 1000);
+        const isNight = now < cachedData.sunrise || now > cachedData.sunset;
+
+        if (isNight) {
+            cityCard.classList.add('night-theme');
+        } else {
+            cityCard.classList.remove('night-theme');
+        }
+
+        console.log(`${cityKey} 使用缓存数据判断白天黑夜 (缓存日期: ${cachedData.date})`);
+    } else {
+        // 如果没有缓存，使用简化的时间判断
+        const now = new Date();
+        const localTime = new Date(now.toLocaleString('en-US', { timeZone: cityConfig.timezone }));
+        const hour = localTime.getHours();
+
+        // 简化判断：6:00-18:00 为白天
+        const isNight = hour < 6 || hour >= 18;
+
+        if (isNight) {
+            cityCard.classList.add('night-theme');
+        } else {
+            cityCard.classList.remove('night-theme');
+        }
+
+        console.log(`${cityKey} 使用简化时间判断白天黑夜 (无缓存数据)`);
     }
 }
 
@@ -636,6 +804,9 @@ function init() {
     updateTime();
     setInterval(updateTime, 1000);
 
+    // 初始化离线模式的白天黑夜主题（在线数据加载前先显示）
+    initOfflineDayNightTheme();
+
     // 初始化天气数据
     updateAllWeather();
     // 每10分钟更新一次天气
@@ -647,6 +818,14 @@ function init() {
 
     console.log('应用初始化完成');
     console.log('API Key已配置');
+}
+
+// 初始化离线模式的日夜主题
+function initOfflineDayNightTheme() {
+    updateDayNightThemeOffline('local');
+    updateDayNightThemeOffline('paris');
+    updateDayNightThemeOffline('newyork');
+    updateDayNightThemeOffline('shanghai');
 }
 
 // 页面加载完成后初始化

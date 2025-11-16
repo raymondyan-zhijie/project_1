@@ -30,13 +30,13 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
     background: var(--primary-bg);
     color: var(--text-primary-day);
-    line-height: 1.5;
+    line-height: 1.4;
     min-height: 100vh;
-    padding: 15px 20px;
+    padding: 5px 15px;
 }
 
 .dashboard-container {
-    max-width: 1880px;
+    max-width: 1600px;
     margin: 0 auto;
 }
 
@@ -78,92 +78,111 @@ body {
 
 /* 应用标题 */
 .app-title {
-    text-align: center;
-    font-size: 1.75rem;
-    font-weight: 600;
-    color: var(--text-primary-day);
-    margin-bottom: 25px;
+    display: none;
 }
 
 /* 天气时间区域 */
 .weather-time-section {
-    margin-bottom: 25px;
+    margin-bottom: 15px;
+}
+
+/* 所有城市卡片横向排列容器 */
+.cities-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 /* 本地城市容器 - 居中大卡片 */
 .local-city-container {
     display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 0;
+    flex: 1;
 }
 
 .city-card-large {
     width: 100%;
-    max-width: 550px;
-    padding: 30px 35px;
+    padding: 12px 16px;
 }
 
 .city-card-large .city-name {
-    font-size: 1.8rem;
+    font-size: 1rem;
 }
 
 .city-card-large .date-display {
-    font-size: 1.2rem;
+    font-size: 0.75rem;
 }
 
 .city-card-large .time-display {
-    font-size: 3.5rem;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+    font-weight: 400;
 }
 
 .city-card-large .temperature {
-    font-size: 2.5rem;
+    font-size: 1.3rem;
 }
 
 .city-card-large .weather-icon {
-    font-size: 4rem;
+    font-size: 2rem;
+}
+
+.city-card-large .timezone-display {
+    font-size: 0.7rem;
 }
 
 /* 其他城市容器 - 小卡片网格 */
 .other-cities-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+    display: flex;
+    gap: 10px;
+    flex: 3;
 }
 
 .city-card-small {
-    padding: 20px;
+    padding: 12px 16px;
+    width: 100%;
+    flex: 1;
 }
 
 .city-card-small .city-name {
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .city-card-small .date-display {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
 }
 
 .city-card-small .time-display {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+    font-weight: 400;
 }
 
-.city-card-small .temperature {
-    font-size: 1.5rem;
-}
-
-.city-card-small .weather-icon {
-    font-size: 2.5rem;
-}
-
-.city-card-small .weather-stats {
-    gap: 8px;
-}
-
-.city-card-small .stat-label {
+.city-card-small .timezone-display {
     font-size: 0.7rem;
 }
 
+.city-card-small .temperature {
+    font-size: 1.1rem;
+}
+
+.city-card-small .weather-icon {
+    font-size: 1.8rem;
+}
+
+.city-card-small .weather-stats {
+    gap: 6px;
+}
+
+.city-card-small .stat-label {
+    font-size: 0.65rem;
+}
+
 .city-card-small .stat-value {
-    font-size: 0.95rem;
+    font-size: 0.8rem;
 }
 
 /* 城市卡片基础样式 */
@@ -211,7 +230,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 6px;
 }
 
 .city-name {
@@ -267,13 +286,6 @@ body {
     color: #5dade2;
 }
 
-.city-card-large .timezone-display {
-    font-size: 1.1rem;
-}
-
-.city-card-small .timezone-display {
-    font-size: 0.8rem;
-}
 
 .date-display {
     font-size: 1rem;
@@ -290,10 +302,7 @@ body {
 }
 
 .weather-info {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 20px;
+    display: none;
 }
 
 .weather-icon {
@@ -316,11 +325,7 @@ body {
 }
 
 .weather-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border-color-day);
+    display: none;
 }
 
 .stat {
@@ -345,44 +350,42 @@ body {
 /* 计时器区域 */
 .timer-section {
     background: var(--card-bg-day);
-    border-radius: 16px;
-    padding: 24px 28px;
+    border-radius: 24px;
+    padding: 45px 60px;
     box-shadow: var(--shadow);
     border: 1px solid var(--border-color-day);
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .section-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    text-align: center;
-    margin-bottom: 24px;
-    color: var(--text-primary-day);
+    display: none;
 }
 
 .timer-controls-top {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    margin-bottom: 30px;
+    gap: 25px;
+    margin-bottom: 40px;
     align-items: center;
 }
 
 .timer-mode {
     display: flex;
-    gap: 12px;
+    gap: 16px;
     background: var(--primary-bg);
-    padding: 4px;
-    border-radius: 12px;
+    padding: 6px;
+    border-radius: 16px;
 }
 
 .mode-btn {
-    padding: 10px 24px;
+    padding: 18px 45px;
     border: none;
     background: transparent;
     color: var(--text-secondary-day);
-    font-size: 1rem;
-    font-weight: 500;
-    border-radius: 8px;
+    font-size: 1.7rem;
+    font-weight: 600;
+    border-radius: 12px;
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -400,17 +403,18 @@ body {
 .countdown-input-group {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
 }
 
 .countdown-input-group input {
-    width: 70px;
-    padding: 10px;
+    width: 110px;
+    padding: 18px;
     border: 2px solid var(--border-color-day);
-    border-radius: 8px;
-    font-size: 1.1rem;
+    border-radius: 12px;
+    font-size: 2rem;
     text-align: center;
     transition: all 0.2s ease;
+    font-weight: 500;
 }
 
 .countdown-input-group input:focus {
@@ -419,37 +423,40 @@ body {
 }
 
 .countdown-input-group span {
-    font-size: 1.5rem;
+    font-size: 2.2rem;
     color: var(--text-secondary-day);
     font-weight: 300;
 }
 
 .timer-display {
-    font-size: 3.5rem;
+    font-size: 12rem;
     font-weight: 300;
     text-align: center;
-    margin: 30px 0;
+    margin: 50px 0;
     color: var(--text-primary-day);
     font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+    letter-spacing: 0.05em;
 }
 
 .timer-buttons {
     display: flex;
     justify-content: center;
-    gap: 12px;
+    gap: 20px;
     flex-wrap: wrap;
     margin-bottom: 30px;
 }
 
 .timer-btn {
-    padding: 12px 28px;
+    padding: 22px 55px;
     border: none;
-    border-radius: 10px;
-    font-size: 1rem;
-    font-weight: 500;
+    border-radius: 16px;
+    font-size: 1.8rem;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
     box-shadow: var(--shadow);
+    min-width: 180px;
 }
 
 .start-btn {
@@ -518,16 +525,16 @@ body {
 }
 
 .laps-title {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     font-weight: 600;
-    margin-bottom: 16px;
+    margin-bottom: 15px;
     color: var(--text-primary-day);
 }
 
 .laps-list {
-    max-height: 300px;
+    max-height: 250px;
     overflow-y: auto;
-    border-radius: 8px;
+    border-radius: 12px;
     background: var(--primary-bg);
     padding: 12px;
 }
@@ -535,21 +542,22 @@ body {
 .lap-item {
     display: flex;
     justify-content: space-between;
-    padding: 12px;
+    padding: 12px 16px;
     margin-bottom: 8px;
     background: var(--card-bg-day);
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid var(--border-color-day);
 }
 
 .lap-number {
     font-weight: 600;
     color: var(--accent-blue);
+    font-size: 1rem;
 }
 
 .lap-times {
     display: flex;
-    gap: 20px;
+    gap: 25px;
 }
 
 .lap-time, .total-time {
@@ -565,7 +573,7 @@ body {
 }
 
 .lap-value {
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 500;
     color: var(--text-primary-day);
     font-variant-numeric: tabular-nums;
@@ -727,6 +735,22 @@ body {
 }
 
 /* 响应式设计 */
+@media (max-width: 1200px) {
+    .timer-display {
+        font-size: 8rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .timer-btn {
+        padding: 18px 40px;
+        font-size: 1.4rem;
+        min-width: 140px;
+    }
+}
+
 @media (max-width: 768px) {
     .language-toggle {
         top: 10px;
@@ -734,45 +758,63 @@ body {
     }
 
     .app-title {
-        font-size: 1.5rem;
+        font-size: 1rem;
         margin-top: 50px;
     }
 
     .local-city-container {
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
 
     .city-card-large {
-        padding: 30px 24px;
+        padding: 14px 18px;
+        max-width: 300px;
     }
 
     .city-card-large .time-display {
-        font-size: 2.8rem;
+        font-size: 1.4rem;
     }
 
     .city-card-large .temperature {
-        font-size: 2rem;
+        font-size: 1.1rem;
     }
 
     .other-cities-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .timer-section {
+        padding: 30px 25px;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 25px;
     }
 
     .timer-display {
-        font-size: 3rem;
+        font-size: 5rem;
+        margin: 40px 0;
     }
 
     .timer-buttons {
-        gap: 8px;
+        gap: 12px;
     }
 
     .timer-btn {
-        padding: 10px 20px;
-        font-size: 0.9rem;
+        padding: 14px 30px;
+        font-size: 1.2rem;
+        min-width: 120px;
+    }
+
+    .mode-btn {
+        padding: 12px 28px;
+        font-size: 1.2rem;
     }
 
     .lap-times {
-        gap: 12px;
+        gap: 15px;
     }
 
     .level-selectors {
@@ -786,27 +828,61 @@ body {
 
 @media (max-width: 480px) {
     body {
-        padding: 12px;
+        padding: 8px;
     }
 
     .timer-section {
-        padding: 20px;
+        padding: 20px 15px;
+    }
+
+    .section-title {
+        font-size: 1.4rem;
+        margin-bottom: 20px;
     }
 
     .timer-display {
-        font-size: 2.5rem;
+        font-size: 3.5rem;
         margin: 30px 0;
     }
 
+    .timer-btn {
+        padding: 12px 24px;
+        font-size: 1rem;
+        min-width: 100px;
+    }
+
+    .mode-btn {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+
+    .city-card-large {
+        max-width: 100%;
+    }
+
     .city-card-large .time-display {
-        font-size: 2.5rem;
+        font-size: 1.3rem;
     }
 
     .city-card-large .temperature {
-        font-size: 1.8rem;
+        font-size: 1rem;
     }
 
     .city-card-small .time-display {
+        font-size: 1.2rem;
+    }
+
+    .other-cities-container {
+        grid-template-columns: 1fr;
+    }
+
+    .countdown-input-group input {
+        width: 70px;
+        padding: 12px;
+        font-size: 1.4rem;
+    }
+
+    .countdown-input-group span {
         font-size: 1.5rem;
     }
 }
