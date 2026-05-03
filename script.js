@@ -1,5 +1,8 @@
 // OpenWeatherMap API 配置
-const API_KEY = '970d3d113e627a7f76997229a4149b8e';
+// API Key 使用 localStorage 存储，避免硬编码泄露
+const API_KEY_STORAGE_KEY = 'openweathermap_api_key';
+let API_KEY = '';
+
 const API_BASE_URL = 'https://api.openweathermap.org/data/2.5';
 
 // 城市配置 - 扩展版
@@ -794,9 +797,42 @@ function playAlertSound(duration = 5) {
     }
 }
 
+// ============ API Key 管理 ============
+
+function loadApiKey() {
+    const stored = localStorage.getItem(API_KEY_STORAGE_KEY);
+    if (stored) {
+        API_KEY = stored;
+        return true;
+    }
+    return false;
+}
+
+function promptApiKey() {
+    const key = prompt(
+        currentLang === 'zh'
+            ? '请输入您的 OpenWeatherMap API Key（免费注册: https://openweathermap.org/api）'
+            : 'Please enter your OpenWeatherMap API Key (free signup: https://openweathermap.org/api)'
+    );
+    if (key && key.trim()) {
+        API_KEY = key.trim();
+        localStorage.setItem(API_KEY_STORAGE_KEY, API_KEY);
+        return true;
+    }
+    return false;
+}
+
 // ============ 初始化 ============
 
 function init() {
+    // 加载 API Key
+    if (!loadApiKey()) {
+        if (!promptApiKey()) {
+            console.warn('未配置 API Key，天气功能将不可用');
+            showAllWeatherErrors();
+        }
+    }
+
     // 加载保存的城市
     loadSavedCity();
 
@@ -808,16 +844,23 @@ function init() {
     initOfflineDayNightTheme();
 
     // 初始化天气数据
-    updateAllWeather();
-    // 每10分钟更新一次天气
-    setInterval(updateAllWeather, 600000);
+    if (API_KEY) {
+        updateAllWeather();
+        // 每10分钟更新一次天气
+        setInterval(updateAllWeather, 600000);
+    }
 
     // 初始化计时器显示
     updateTimerDisplay();
     updateLapsDisplay();
 
     console.log('应用初始化完成');
-    console.log('API Key已配置');
+}
+
+function showAllWeatherErrors() {
+    ['local', 'paris', 'newyork', 'shanghai'].forEach(key => {
+        showWeatherError(key);
+    });
 }
 
 // 初始化离线模式的日夜主题
