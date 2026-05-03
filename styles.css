@@ -302,7 +302,10 @@ body {
 }
 
 .weather-info {
-    display: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
 }
 
 .weather-icon {
@@ -325,7 +328,10 @@ body {
 }
 
 .weather-stats {
-    display: none;
+    display: flex;
+    gap: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color-day);
 }
 
 .stat {

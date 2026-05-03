@@ -1,0 +1,15 @@
+{
+  "name": "weather-dashboard",
+  "version": "2.1.0",
+  "description": "Global Time & Weather Dashboard for meeting room display",
+  "private": true,
+  "scripts": {
+    "lint": "eslint *.js",
+    "format": "prettier --write \"*.{js,css,html,json,md}\"",
+    "format:check": "prettier --check \"*.{js,css,html,json,md}\""
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.0"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  },
+  "rules": {
+    "no-unused-vars": "warn",
+    "no-console": "off",
+    "no-undef": "warn"
+  },
+  "globals": {
+    "currentLang": "readonly",
+    "t": "readonly",
+    "switchLanguage": "readonly",
+    "updateTranslations": "readonly",
+    "getContinents": "readonly",
+    "getCountries": "readonly",
+    "getCities": "readonly",
+    "searchCities": "readonly",
+    "API_KEY": "readonly",
+    "API_BASE_URL": "readonly",
+    "cities": "writable",
+    "SUNRISE_SUNSET_CACHE_KEY": "readonly",
+    "weatherIcons": "readonly",
+    "aqiLevels": "readonly",
+    "timerState": "writable"
+  }
+}

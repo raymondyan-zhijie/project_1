@@ -75,8 +75,8 @@
 
 ### 2. 配置 API Key（可选）
 
-1. 打开 `script.js` 文件
-2. 找到第2行：
+1. 打开 `config.js` 文件
+2. 找到第3行：
    ```javascript
    const API_KEY = 'YOUR_API_KEY_HERE';
    ```
@@ -148,9 +148,14 @@ npx http-server
 project_1/
 ├── index.html                  # 主页面
 ├── styles.css                  # 样式文件（会议室优化）
-├── script.js                   # 功能脚本（缓存系统、主题判断）
-├── cities-data.js              # 城市数据库
+├── config.js                   # API配置、城市数据、常量
+├── weather.js                  # 天气获取、缓存系统、日夜主题
+├── timer.js                    # 计时器逻辑、倒计时提醒
+├── script.js                   # 时间显示、城市选择、初始化
+├── cities-data.js              # 全球城市数据库
 ├── translations.js             # 多语言翻译
+├── sw.js                       # Service Worker（离线PWA）
+├── package.json                # 工程配置（ESLint + Prettier）
 ├── README.md                   # 项目说明文档
 └── OFFLINE_CACHE_README.md     # 离线缓存系统详细文档
 ```
